@@ -1,4 +1,6 @@
+import { useState } from "react";
 import Expenses from "./components/Expenses/Expenses";
+import NewExpense from "./components/NewExpense/NewExpense";
 
 const App = () => {
   const expenses = [
@@ -21,10 +23,26 @@ const App = () => {
       date: new Date(2022, 7, 27)
     }
   ]
+  const [localExpenses, setExpenses] = useState(expenses);
+  const addExpenseHandler = (newExpense) => {
+    const newId = Math.max(...expenses.map(x => x.id)) + 1
+    const newExpenseItem = {
+      id: newId,
+      title: newExpense.title,
+      amount: newExpense.amount,
+      date: new Date(newExpense.date)
+    }
+    setExpenses(prevState => {
+      return [
+        ...prevState,
+        newExpenseItem
+      ]
+    })
+  }
   return (
     <div>
-      <h2>Let's get started! Great...</h2>
-      <Expenses items={expenses} />
+      <NewExpense onAddExpense={addExpenseHandler} />
+      <Expenses items={localExpenses} />
     </div>
   );
 }
