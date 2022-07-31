@@ -2,9 +2,6 @@ import { useState } from "react";
 import "./ExpenseForm.css";
 
 const ExpenseForm = (props) => {
-  // const [title, setTitle] = useState();
-  // const [amount, setAmount] = useState();
-  // const [date, setDate] = useState();
   const [userInput, setUserInput] = useState({
     title: '',
     amount: '',
@@ -37,6 +34,11 @@ const ExpenseForm = (props) => {
   };
   const submitNewExpense = (e) => {
     e.preventDefault();
+    for (const props in userInput) {
+      if (userInput[props] === '') {
+        return
+      }
+    }
     const newExpense = {
       title: userInput.title,
       amount: userInput.amount,
@@ -48,6 +50,9 @@ const ExpenseForm = (props) => {
       amount: '',
       date: '',
     })
+  }
+  const resetEditingHandler = () => {
+    props.resetEditing()
   }
   return (
     <form onSubmit={submitNewExpense}>
@@ -79,6 +84,7 @@ const ExpenseForm = (props) => {
         </div>
       </div>
       <div className="new-expense__actions">
+        <button onClick={resetEditingHandler}>Cancel</button>
         <button type="submit">Add Expense</button>
       </div>
     </form>
